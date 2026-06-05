@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de AR con IA · Asistente de Seguridad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F1EA; --ink:#1A1D21; --ink2:#4A4F57; --line:#D9D3C6;
+    --hiviz:#FFCC00; --hiviz-d:#E6B400; --orange:#F26419; --steel:#23272E;
+    --green:#1E8E4E; --amber:#E6A700; --red:#D64545; --red-d:#9E1B1B;
+    --card:#FFFFFF; --shadow:0 2px 0 rgba(26,29,33,.08),0 10px 30px -12px rgba(26,29,33,.25);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:'Barlow',system-ui,sans-serif;color:var(--ink);background:var(--paper);
+    background-image:repeating-linear-gradient(135deg,transparent 0 22px,rgba(255,204,0,.05) 22px 24px);
+    min-height:100vh;line-height:1.45}
+  .wrap{max-width:760px;margin:0 auto;padding:82px 16px 130px}
+  h1,h2,h3,.disp{font-family:'Barlow Condensed',sans-serif;letter-spacing:.01em;line-height:1.05}
+  header{position:sticky;top:0;z-index:30;background:var(--steel);border-bottom:4px solid var(--hiviz);
+    background-image:repeating-linear-gradient(45deg,var(--steel) 0 18px,#2c313a 18px 36px)}
+  .hbar{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px;color:#fff}
+  .logo{width:42px;height:42px;flex:0 0 auto;display:grid;place-items:center;background:var(--hiviz);border-radius:10px;font-size:24px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+  .htxt b{font-family:'Barlow Condensed';font-size:26px;font-weight:800;display:block;letter-spacing:.02em}
+  .htxt span{font-size:12.5px;color:#cfd4db;letter-spacing:.08em;text-transform:uppercase}
+  .steps{display:flex;gap:6px;margin:18px 0 22px}
+  .step{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+  .step.on{background:var(--hiviz)} .step.done{background:var(--green)}
+  .stepcap{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--ink2);margin:-8px 0 2px}
+  .panel{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);animation:rise .4s cubic-bezier(.2,.8,.2,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .panel h2{font-size:30px;font-weight:800;margin:2px 0 4px}
+  .lead{color:var(--ink2);font-size:16.5px;margin:0 0 18px}
+  label.fld{display:block;margin:0 0 16px}
+  label.fld .lab{font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .lab .num{background:var(--ink);color:#fff;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:13px}
+  input,select,textarea{width:100%;font-family:'Barlow';font-size:17px;color:var(--ink);padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#FCFBF8;outline:none;transition:.15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--hiviz-d);box-shadow:0 0 0 4px rgba(255,204,0,.22);background:#fff}
+  textarea{min-height:78px;resize:vertical}
+  .btn{font-family:'Barlow Condensed';font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:19px;border:none;border-radius:14px;padding:15px 22px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+  .btn:active{transform:translateY(2px)} .btn:disabled{opacity:.55;cursor:not-allowed}
+  .btn-main{background:var(--hiviz);color:var(--ink);box-shadow:0 4px 0 var(--hiviz-d)}
+  .btn-main:active{box-shadow:0 1px 0 var(--hiviz-d)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-dark{background:var(--steel);color:#fff;box-shadow:0 4px 0 #0d0f12}
+  .btn-dark:active{box-shadow:0 1px 0 #0d0f12}
+  .btn-sm{font-size:15px;padding:9px 14px;border-radius:10px}
+  .nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(0deg,var(--paper) 70%,transparent);padding:14px 16px;display:flex;gap:10px;max-width:760px;margin:0 auto}
+  .nav .btn{flex:1} .nav .btn-ghost{flex:0 0 auto}
+  .fase{border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;background:#FCFBF8;position:relative}
+  .fase .ftag{position:absolute;top:-11px;left:14px;background:var(--ink);color:#fff;font-family:'Barlow Condensed';font-weight:800;font-size:14px;letter-spacing:.1em;padding:3px 11px;border-radius:8px;text-transform:uppercase}
+  .fase .del{position:absolute;top:10px;right:10px;background:#fff;border:1.5px solid var(--line);border-radius:9px;width:34px;height:34px;cursor:pointer;font-size:16px;color:var(--red)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .chip{background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:6px 12px;font-size:14.5px;display:flex;gap:7px;align-items:center}
+  .chip button{border:none;background:none;color:var(--red);cursor:pointer;font-size:16px;line-height:1;padding:0}
+  .addchip{display:flex;gap:8px;margin-top:8px} .addchip input{flex:1}
+  .phaseblock{margin-bottom:26px}
+  .phasehd{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .phasehd .ix{background:var(--hiviz);color:var(--ink);font-family:'Barlow Condensed';font-weight:800;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:17px}
+  .phasehd h3{font-size:22px;font-weight:700;margin:0}
+  .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:9px}
+  .rcard{border:2px solid var(--line);border-radius:14px;background:#fff;padding:10px 8px 9px;cursor:pointer;text-align:center;transition:.13s;position:relative;user-select:none}
+  .rcard:hover{border-color:var(--hiviz-d)}
+  .rcard.sel{border-color:var(--ink);background:#FFFBEA;box-shadow:0 4px 0 var(--hiviz-d)}
+  .rcard.sel .tick{opacity:1;transform:scale(1)}
+  .rcard.ia::after{content:"IA";position:absolute;top:5px;left:5px;background:var(--steel);color:var(--hiviz);font-family:'Barlow Condensed';font-weight:800;font-size:10px;padding:1px 5px;border-radius:5px;letter-spacing:.08em}
+  .tri{width:50px;height:44px;margin:2px auto 6px;position:relative}
+  .tri svg{width:100%;height:100%;display:block}
+  .tri .em{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;padding-top:9px}
+  .rcard .nm{font-family:'Barlow Condensed';font-weight:600;font-size:13.5px;line-height:1.04;text-transform:uppercase;letter-spacing:.01em;color:var(--ink)}
+  .tick{position:absolute;top:-9px;right:-9px;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:15px;opacity:0;transform:scale(.4);transition:.18s;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+  .selcount{font-family:'Barlow Condensed';font-weight:700;font-size:14px;color:var(--ink2);margin:9px 0 0;text-transform:uppercase;letter-spacing:.06em}
+  .sumfase{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:14px;background:#fff}
+  .sumfase .top{background:var(--steel);color:#fff;padding:11px 15px;display:flex;justify-content:space-between;align-items:center}
+  .sumfase .top b{font-family:'Barlow Condensed';font-size:19px;font-weight:700}
+  .sumfase .top span{font-size:13px;color:#cfd4db}
+  .rrow{display:flex;align-items:center;gap:11px;padding:10px 15px;border-top:1px solid var(--line)}
+  .rrow .ic{font-size:18px;width:24px;text-align:center}
+  .rrow .rn{flex:1;font-size:15px;font-weight:600}
+  .rrow .gp{font-family:'Barlow Condensed';font-weight:700;font-size:14px;color:var(--ink2);min-width:62px;text-align:right}
+  .badge{font-family:'Barlow Condensed';font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;padding:4px 10px;border-radius:8px;color:#fff;min-width:92px;text-align:center}
+  .b-MENOR{background:var(--green)} .b-MODERADO{background:var(--amber)} .b-ALTO{background:var(--orange)} .b-URGENTE{background:var(--red)} .b-EXTREMO{background:var(--red-d)}
+  .hint{background:#FFFBEA;border:1.5px dashed var(--hiviz-d);border-radius:12px;padding:12px 14px;font-size:14.5px;color:#6b5800;margin-top:6px}
+  .ok{background:#EAF7EF;border:1.5px solid var(--green);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:flex-start}
+  .ok .big{font-size:26px}
+  .filebtns{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+  .mini{font-size:13px;color:var(--ink2);text-align:center;margin-top:14px}
+  .empty{text-align:center;color:var(--ink2);padding:18px 0}
+  /* Intake / IA */
+  .hero{background:var(--steel);border-radius:20px;padding:24px;color:#fff;margin-bottom:16px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-30px;top:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,204,0,.25),transparent 70%)}
+  .hero .k{font-family:'Barlow Condensed';font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--hiviz);text-transform:uppercase}
+  .hero h2{font-size:34px;font-weight:800;margin:6px 0 8px;color:#fff}
+  .hero p{color:#cfd4db;font-size:16px;margin:0;max-width:46ch}
+  .flow{display:flex;gap:8px;margin:16px 0 4px;flex-wrap:wrap}
+  .flow div{flex:1;min-width:120px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;font-size:13.5px;color:#e7eaef}
+  .flow b{display:block;font-family:'Barlow Condensed';font-size:16px;color:var(--hiviz)}
+  .spin{width:22px;height:22px;border:3px solid rgba(26,29,33,.25);border-top-color:var(--ink);border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .thinking{text-align:center;padding:18px 0}
+  .thinking .spin{width:40px;height:40px;border-width:5px;border-top-color:var(--hiviz-d);margin-bottom:12px}
+  .thinking p{font-family:'Barlow Condensed';font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink)}
+  .thinking small{color:var(--ink2);font-size:14px}
+  .upload-btn{position:relative;overflow:hidden;cursor:pointer;background:#fff;border:2px dashed var(--hiviz-d);border-radius:14px;padding:18px;text-align:center;transition:.15s;display:block;width:100%}
+  .upload-btn:hover{background:#FFFBEA;border-color:var(--ink)}
+  .upload-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .upload-btn .uic{font-size:32px;display:block;margin-bottom:6px}
+  .upload-btn .utxt{font-family:'Barlow Condensed';font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.05em}
+  .upload-btn .usub{font-size:13px;color:var(--ink2);margin-top:3px}
+  .upload-btn.loaded{border-style:solid;border-color:var(--green);background:#EAF7EF}
+  .upload-btn.loaded .utxt{color:var(--green)}
+  .divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--ink2);font-size:13px}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
+  .errbox{background:#FDECEC;border:1.5px solid var(--red);border-radius:12px;padding:12px 14px;font-size:14.5px;color:var(--red-d);margin-top:12px}
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.choice{grid-template-columns:1fr}}
+  .ccard{position:relative;text-align:left;cursor:pointer;border:2px solid var(--line);background:var(--card);border-radius:18px;padding:22px 20px;box-shadow:var(--shadow);transition:.16s;font-family:'Barlow';display:flex;flex-direction:column;gap:4px}
+  .ccard:hover{border-color:var(--hiviz-d);transform:translateY(-3px)}
+  .ccard:active{transform:translateY(0)}
+  .ccard .cic{font-size:40px;margin-bottom:6px}
+  .ccard h3{font-family:'Barlow Condensed';font-weight:800;font-size:24px;margin:0;text-transform:none}
+  .ccard p{margin:0;color:var(--ink2);font-size:15px}
+  .ccard .go{margin-top:12px;font-family:'Barlow Condensed';font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:6px}
+  .ccard.feat{border-color:var(--ink);background:#FFFDF4}
+  .ccard .rec{position:absolute;top:-11px;right:16px;background:var(--green);color:#fff;font-family:'Barlow Condensed';font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:8px}
+  .backlink{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px;color:var(--ink2);background:none;border:none;cursor:pointer;margin-bottom:12px;padding:0}
+</style>
+</head>
+<body>
+<header><div class="hbar"><div class="logo">🤖</div>
+  <div class="htxt"><b>ANÁLISIS DE RIESGO</b><span>Generador asistido por IA · HYST</span></div></div></header>
+
+<div class="wrap">
+  <div id="stepcap" class="stepcap"></div>
+  <div id="steps" class="steps" style="display:none"></div>
+  <div id="app"></div>
+</div>
+<div class="nav" id="nav"></div>
+
+<script>
+const RIESGOS = [
+  {n:"EXPLOSION", e:"💥", E:1.2,P:1.2,C:6},
+  {n:"INCENDIO", e:"🔥", E:1.2,P:1.2,C:3},
+  {n:"CONTACTO TERMICO", e:"♨️", E:1.2,P:1.2,C:3},
+  {n:"CHOQUE ELECTRICO", e:"⚡", E:1.2,P:1.2,C:3},
+  {n:"ARCO ELECTRICO", e:"🔌", E:1.2,P:1.2,C:6},
+  {n:"CONTACTO, INGESTA DE SUSTANCIA CAUTICA O CORROSIVA", e:"🧪", E:0.6,P:0.6,C:3},
+  {n:"INHALACION, CONTACTO CUTANEO O INGESTION DE SUSTANCIAS NOCIVAS", e:"😷", E:0.6,P:0.6,C:1.7},
+  {n:"CAIDA DE PERSONAS A DISTINTO NIVEL", e:"🪜", E:2.5,P:1.2,C:3},
+  {n:"CAIDA DE PERSONAS AL MISMO NIVEL", e:"🚶", E:1.2,P:1.2,C:1.7},
+  {n:"CAIDA DE OBJETOS", e:"📦", E:1.2,P:1.2,C:3},
+  {n:"PISADAS SOBRE OBJETOS", e:"👣", E:1.2,P:1.2,C:1.7},
+  {n:"CHOQUES CONTRA PARTES INMOVILES", e:"🧱", E:1.2,P:1.2,C:1.7},
+  {n:"CHOQUE CONTRA PARTES MOVILES", e:"⚙️", E:1.2,P:1.2,C:3},
+  {n:"GOLPES POR OBJETOS O HERRAMIENTAS", e:"🔨", E:1.2,P:1.2,C:1.7},
+  {n:"PROYECCIONDE FRAGMENTOS O PARTICULAS", e:"🥽", E:0.6,P:0.6,C:1.7},
+  {n:"SOBREESFUERZOS", e:"🏋️", E:1.2,P:1.2,C:1.7},
+  {n:"EXPOSICION A TEMPERATURAS EXTREMAS", e:"🌡️", E:1.2,P:1.2,C:1.7},
+  {n:"EXPOSICION A RADIACIONES", e:"☢️", E:0.6,P:0.6,C:1.7},
+  {n:"ACCIDENTES CAUSADOS POR SERES VIVOS", e:"🐍", E:1.2,P:1.2,C:1.7},
+  {n:"ACCIDENTES DE TRAFICO", e:"🚧", E:1.2,P:1.2,C:3},
+  {n:"EXPOSICION A AGENTES QUIMICOS", e:"⚗️", E:0.6,P:0.6,C:3},
+  {n:"EXPOSICION A AGENTES BIOLOGICOS", e:"🦠", E:0.6,P:0.6,C:1.7},
+  {n:"SENSIBILIDAD ESPECIAL", e:"➕", E:0.6,P:0.6,C:1.7},
+  {n:"OTROS", e:"❓", E:0.6,P:0.6,C:1.7},
+  {n:"ATROPELLOS, GOLPES CONTRA CON VEHICULOS", e:"🚚", E:1.2,P:1.2,C:3},
+  {n:"ATRAPAMIENTO POR O ENTRE OBJETOS", e:"🤏", E:1.2,P:1.2,C:3},
+  {n:"ATRAPAMIENTO POR VUELCO DE MAQUINAS", e:"🏗️", E:1.2,P:1.2,C:3},
+  {n:"AGENTES FISICOS:RUIDO", e:"🔊", E:2.5,P:0.6,C:1.7}
+];
+const NAMES = RIESGOS.map(r=>r.n);
+const idxByName = Object.fromEntries(RIESGOS.map((r,i)=>[r.n,i]));
+const INSTALACIONES = ["Puerto San Lorenzo","Terminal de Despacho San Lorenzo (TDSL)","Refinería La Plata","Refinería Luján de Cuyo","Refinería Plaza Huincul","Complejo Industrial Ensenada","Aeroplanta Rosario","Aeroplanta Córdoba","Aeroplanta Ezeiza","Otra (escribir abajo)"];
+function nivel(gp){if(gp<=14)return"MENOR";if(gp<35)return"MODERADO";if(gp<=82)return"ALTO";if(gp<=350)return"URGENTE";return"EXTREMO";}
+
+const PE_EJEMPLO = `PROCEDIMIENTO DE TRABAJO - "Descarga y carga de obradores" - Planta: Terminal de Despacho San Lorenzo.
+OBJETIVO: Establecer una metodología de trabajo segura para la descarga y carga de contenedores (obradores) en planta de YPF.
+DESARROLLO DE TAREAS:
+- Apertura de permisos de trabajo.
+- Se realiza la carga/descarga de obradores en las zonas destinadas. Los obradores pesan entre 2,5 Tn y 5 Tn (contenedores marítimos). Se emplea hidrogrúa del camión o grúa adicional acorde al peso. Elementos auxiliares: fajas, grilletes y eslingas. Las maniobras son guiadas por un señalero con chaleco reflectivo mediante señas; la carga se manipula con 2 retenidas (sogas).
+- Se requiere conexión a puesta a tierra de cada obrador. La EC realiza la conexión hasta el tablero general de zona de obradores (enterrada o aérea).
+- Orden y limpieza. Cierre de permisos de trabajo.
+MAQUINAS Y HERRAMIENTAS: Grúa / camión con hidrogrúa, camión con semiacoplado, camión chasis, elementos de izaje (fajas y grilletes), escalera extensible, herramientas manuales.
+PERSONAL: aprox. 6 personas.`;
+
+let mode = "home";
+let step = 0;
+let iaLoading = false, iaError = "";
+const STEP_NAMES = ["Datos de la tarea","Fases del trabajo","Riesgos por fase","Revisar y generar"];
+let state = { titulo:"", instalacion:"Puerto San Lorenzo", otraInst:"", tecnico:"", version:1, peText:"",
+  fases:[{titulo:"",detalle:"",personas:"",herramientas:[],riesgos:[],iaRiesgos:[]}] };
+
+function tri(emoji){return `<div class="tri"><svg viewBox="0 0 100 90"><path d="M50 6 L96 84 L4 84 Z" fill="#FFCC00" stroke="#1A1D21" stroke-width="7" stroke-linejoin="round"/></svg><div class="em">${emoji}</div></div>`;}
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+function render(scrollTop=false){
+  const cap=document.getElementById("stepcap"), steps=document.getElementById("steps");
+  if(mode==="home"){ cap.textContent="¿Cómo querés armar el Análisis de Riesgo?"; steps.style.display="none"; }
+  else if(mode==="intake"){ cap.textContent="Empezá pegando tu procedimiento (PE)"; steps.style.display="none"; }
+  else{ cap.textContent=`Paso ${step+1} de 4 · ${STEP_NAMES[step]}`; steps.style.display="flex";
+    steps.innerHTML=[0,1,2,3].map(i=>`<div class="step ${i<step?'done':(i===step?'on':'')}"></div>`).join(""); }
+  const app=document.getElementById("app");
+  app.innerHTML = mode==="home" ? renderHome() : mode==="intake" ? renderIntake() : [renderDatos,renderFases,renderRiesgos,renderResumen][step]();
+  document.getElementById("nav").innerHTML = renderNav();
+  bind();
+  if(scrollTop) window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderHome(){
+  return `<div class="hero">
+    <div class="k">⚠ Asistente HYST</div>
+    <h2>Generá tu AR en minutos</h2>
+    <p>Elegí cómo querés trabajar. Las dos opciones llegan al mismo documento final, listo para revisar y firmar.</p>
+  </div>
+  <div class="choice">
+    <button class="ccard feat" onclick="chooseIA()">
+      <span class="rec">Recomendado</span>
+      <div class="cic">🤖</div>
+      <h3>Con Inteligencia Artificial</h3>
+      <p>Pegás el texto del procedimiento (PE) y la IA arma el borrador solo: detecta las fases y propone los peligros de cada una.</p>
+      <span class="go">Pegar PE y analizar →</span>
+    </button>
+    <button class="ccard" onclick="chooseManual()">
+      <div class="cic">✍️</div>
+      <h3>A mano, paso a paso</h3>
+      <p>Cargás vos las fases y elegís los peligros tocando los íconos. Ideal si no tenés el PE en texto o querés control total.</p>
+      <span class="go">Empezar a cargar →</span>
+    </button>
+  </div>`;
+}
+function chooseIA(){ mode="intake"; render(true); }
+function chooseManual(){ resetData(); mode="wizard"; step=0; render(true); }
+function resetData(){ state={titulo:"",instalacion:"Puerto San Lorenzo",otraInst:"",tecnico:"",version:1,peText:"",fases:[{titulo:"",detalle:"",personas:"",herramientas:[],riesgos:[],iaRiesgos:[]}]}; }
+
+function renderIntake(){
+  return `<button class="backlink" onclick="volverInicio()">← Volver al inicio</button>
+  <div class="hero">
+    <div class="k">★ Paso mágico</div>
+    <h2>Pegá el procedimiento y la IA arma el borrador</h2>
+    <p>Copiá el texto de tu PE (procedimiento de trabajo). La IA lo lee, lo divide en fases y te propone los peligros de cada una. Vos solo revisás y confirmás.</p>
+    <div class="flow">
+      <div><b>1 · Pegás</b>el texto del PE</div>
+      <div><b>2 · La IA</b>propone fases y riesgos</div>
+      <div><b>3 · Revisás</b>y generás el AR</div>
+    </div>
+  </div>
+  <div class="panel">
+    ${iaLoading ? `<div class="thinking"><span class="spin"></span><p>Analizando el procedimiento…</p><small>Identificando fases y peligros asociados</small></div>` : `
+    <label class="upload-btn" id="uploadZone">
+      <input type="file" accept=".docx,.doc" onchange="subirArchivo(this)">
+      <span class="uic">📄</span>
+      <span class="utxt" id="uploadTxt">Subí tu archivo .docx</span>
+      <span class="usub" id="uploadSub">Tocá acá o arrastrá el archivo del procedimiento (PE)</span>
+    </label>
+    <div class="divider">o pegá el texto a mano</div>
+    <label class="fld"><span class="lab">Texto del procedimiento (PE)</span>
+      <textarea id="pe" style="min-height:130px" placeholder="Pegá acá el texto del PE...">${esc(state.peText)}</textarea></label>
+    ${iaError?`<div class="errbox">⚠️ ${esc(iaError)}</div>`:''}
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-main" style="flex:1;min-width:200px" onclick="analizarIA()">✨ Analizar con IA</button>
+      <button class="btn btn-ghost btn-sm" onclick="cargarEjemplo()">Probar con ejemplo</button>
+    </div>
+    <p class="mini">¿Preferís cargarlo a mano? <a href="#" onclick="entrarManual();return false" style="color:var(--ink);font-weight:700">Empezar sin IA →</a></p>`}
+  </div>`;
+}
+
+async function subirArchivo(input){
+  const file = input.files[0]; if(!file) return;
+  const zone=document.getElementById("uploadZone");
+  const txt=document.getElementById("uploadTxt");
+  const sub=document.getElementById("uploadSub");
+  zone.classList.add("loaded");
+  txt.textContent="📄 "+file.name;
+  sub.textContent="Procesando con IA…";
+  iaLoading=true; iaError=""; render();
+  const fd=new FormData(); fd.append("file",file);
+  try{
+    const resp=await fetch("/api/analizar-archivo",{method:"POST",body:fd});
+    const parsed=await resp.json();
+    if(parsed.error) throw new Error(parsed.error);
+    aplicarBorrador(parsed);
+    iaLoading=false; mode="wizard"; step=0; render(true);
+  }catch(err){
+    iaLoading=false; iaError=(err&&err.message)||"No se pudo leer el archivo. Intentá de nuevo.";
+    render();
+  }
+}
+async function analizarIA(){
+  const pe=document.getElementById("pe"); state.peText = pe? pe.value.trim() : state.peText;
+  if(!state.peText){ iaError="Pegá primero el texto del procedimiento."; render(); return; }
+  iaLoading=true; iaError=""; render();
+  const prompt = `Sos un experto en Higiene y Seguridad en el Trabajo (industria del petróleo y construcción, Argentina). Te paso el texto de un PROCEDIMIENTO DE TRABAJO (PE). Tu tarea: armar el borrador de un Análisis de Riesgo (AR).
+
+DEVOLVÉ SOLO un objeto JSON válido, sin texto adicional ni markdown, con esta forma exacta:
+{"titulo": "...", "instalacion": "...", "fases": [{"titulo":"...","detalle":"una sola oración","personas": <numero o null>,"herramientas":["...","..."],"riesgos":["...","..."]}]}
+
+REGLAS:
+- Dividí el trabajo en 2 a 6 fases lógicas y secuenciales.
+- En "riesgos" usá EXCLUSIVAMENTE valores de esta lista (copiá el texto EXACTO, incluso si tiene errores de tipeo). No inventes riesgos fuera de la lista:
+${NAMES.map(n=>`  - ${n}`).join("\n")}
+- Por cada fase, elegí entre 3 y 8 riesgos realmente aplicables a esa etapa.
+- "detalle" debe ser breve (una oración).
+- Si el texto menciona la instalación/planta, ponela en "instalacion".
+
+PROCEDIMIENTO:
+"""${state.peText.slice(0,6000)}"""`;
+  try{
+    const resp = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000,
+        messages:[{role:"user",content:prompt}] })
+    });
+    const data = await resp.json();
+    let txt = (data.content||[]).map(b=>b.text||"").join("\n");
+    const a=txt.indexOf("{"), b=txt.lastIndexOf("}");
+    if(a<0||b<0) throw new Error("La IA no devolvió un resultado válido. Probá de nuevo.");
+    const parsed = JSON.parse(txt.slice(a,b+1));
+    aplicarBorrador(parsed);
+    iaLoading=false; mode="wizard"; step=0; render();
+  }catch(err){
+    iaLoading=false; iaError = (err && err.message) ? err.message : "No se pudo analizar. Revisá la conexión e intentá otra vez.";
+    render();
+  }
+}
+function aplicarBorrador(p){
+  state.titulo = p.titulo || state.titulo;
+  if(p.instalacion){ const m=INSTALACIONES.find(x=>x.toLowerCase().includes(String(p.instalacion).toLowerCase().slice(0,8)));
+    if(m){state.instalacion=m;} else {state.instalacion="Otra (escribir abajo)"; state.otraInst=p.instalacion;} }
+  const fases = Array.isArray(p.fases)? p.fases : [];
+  state.fases = fases.length? fases.map(f=>{
+    const rs = (Array.isArray(f.riesgos)?f.riesgos:[]).filter(r=>NAMES.includes(r));
+    return {titulo:f.titulo||"", detalle:f.detalle||"", personas:(f.personas??"")+"",
+      herramientas:Array.isArray(f.herramientas)?f.herramientas:[], riesgos:rs, iaRiesgos:rs.slice()};
+  }) : state.fases;
+}
+function cargarEjemplo(){ state.peText=PE_EJEMPLO; render(); setTimeout(()=>{const t=document.getElementById("pe"); if(t){t.focus();t.scrollIntoView({block:"center"});}},40); }
+function entrarManual(){ mode="wizard"; step=0; render(); }
+
+/* ===== Wizard (igual que antes, con marca IA en riesgos sugeridos) ===== */
+function renderDatos(){
+  return `<div class="panel">
+    <h2>Datos de la tarea</h2>
+    <p class="lead">La IA ya completó esto a partir del PE. Revisalo y corregí si hace falta.</p>
+    <label class="fld"><span class="lab"><span class="num">1</span> Nombre del trabajo</span>
+      <input id="f_titulo" placeholder="Ej.: Construcción de muro perimetral" value="${esc(state.titulo)}"></label>
+    <label class="fld"><span class="lab"><span class="num">2</span> ¿En qué instalación?</span>
+      <select id="f_inst">${INSTALACIONES.map(o=>`<option ${state.instalacion===o?'selected':''}>${o}</option>`).join("")}</select></label>
+    <div id="otraWrap" style="${state.instalacion.startsWith('Otra')?'':'display:none'}">
+      <label class="fld"><span class="lab">Nombre de la instalación</span>
+      <input id="f_otra" placeholder="Nombre de la planta" value="${esc(state.otraInst)}"></label></div>
+    <label class="fld"><span class="lab"><span class="num">3</span> Técnico responsable (opcional)</span>
+      <input id="f_tec" placeholder="Tu nombre y apellido" value="${esc(state.tecnico)}"></label>
+  </div>`;
+}
+function renderFases(){
+  return `<div class="panel"><h2>Fases del trabajo</h2>
+    <p class="lead">Estas son las etapas que detectó la IA. Editá, agregá o borrá lo que necesites.</p>
+    ${state.fases.map((f,i)=>faseCard(f,i)).join("")}
+    <button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="addFase()">＋ Agregar otra fase</button></div>`;
+}
+function faseCard(f,i){
+  return `<div class="fase"><span class="ftag">Fase ${i+1}</span>
+    ${state.fases.length>1?`<button class="del" onclick="delFase(${i})">✕</button>`:''}
+    <label class="fld" style="margin-top:6px"><span class="lab">¿Qué se hace en esta etapa?</span>
+      <input data-f="${i}" data-k="titulo" placeholder="Ej.: Excavación manual" value="${esc(f.titulo)}"></label>
+    <label class="fld"><span class="lab">Detalle</span>
+      <textarea data-f="${i}" data-k="detalle">${esc(f.detalle)}</textarea></label>
+    <label class="fld" style="margin-bottom:8px"><span class="lab">¿Cuántas personas?</span>
+      <input data-f="${i}" data-k="personas" inputmode="numeric" style="max-width:120px" value="${esc(f.personas)}"></label>
+    <span class="lab" style="font-family:'Barlow Condensed';font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px">Herramientas / equipos</span>
+    <div class="chips">${f.herramientas.map((h,j)=>`<span class="chip">${esc(h)} <button onclick="delHerr(${i},${j})">✕</button></span>`).join("")||'<span class="empty" style="padding:4px 0">Sin herramientas</span>'}</div>
+    <div class="addchip"><input id="herr_${i}" placeholder="Agregar herramienta..." onkeydown="if(event.key==='Enter')addHerr(${i})">
+      <button class="btn btn-dark btn-sm" onclick="addHerr(${i})">Agregar</button></div></div>`;
+}
+function renderRiesgos(){
+  return `<div class="panel"><h2>Riesgos por fase</h2>
+    <p class="lead">Las tarjetas marcadas <b>IA</b> son las que sugirió el sistema. Tocá para sumar o quitar las que quieras.</p>
+    ${state.fases.map((f,i)=>`<div class="phaseblock">
+      <div class="phasehd"><span class="ix">${i+1}</span><h3>${esc(f.titulo)||'Fase '+(i+1)}</h3></div>
+      <div class="rgrid">${RIESGOS.map(r=>{
+        const sel=f.riesgos.includes(r.n); const ia=(f.iaRiesgos||[]).includes(r.n);
+        return `<div class="rcard ${sel?'sel':''} ${ia?'ia':''}" onclick="toggleRiesgo(${i},'${r.n.replace(/'/g,"\\'")}')">
+          <div class="tick">✓</div>${tri(r.e)}<div class="nm">${r.n.replace('PROYECCIONDE','PROYECCIÓN DE').replace(/,.*/,'')}</div></div>`;
+      }).join("")}</div>
+      <p class="selcount">${f.riesgos.length} peligro(s) seleccionado(s)</p></div>`).join("")}</div>`;
+}
+function renderResumen(){
+  let totalR=0,alertas=0;
+  const cuerpo=state.fases.map((f,i)=>{
+    const rows=f.riesgos.map(rn=>{const r=RIESGOS[idxByName[rn]];const gp=+(r.E*r.P*r.C).toFixed(2);const nv=nivel(gp);totalR++;if(nv!=="MENOR")alertas++;
+      return `<div class="rrow"><span class="ic">${r.e}</span><span class="rn">${r.n.replace('PROYECCIONDE','PROYECCIÓN DE')}</span><span class="gp">GP ${gp}</span><span class="badge b-${nv}">${nv}</span></div>`;
+    }).join("")||`<div class="rrow"><span class="rn" style="color:var(--red)">⚠️ Sin peligros en esta fase</span></div>`;
+    return `<div class="sumfase"><div class="top"><b>Fase ${i+1}: ${esc(f.titulo)||'(sin nombre)'}</b><span>${f.personas?f.personas+' pers.':''}</span></div>${rows}</div>`;
+  }).join("");
+  const inst=state.instalacion.startsWith('Otra')?(state.otraInst||'(sin definir)'):state.instalacion;
+  return `<div class="panel"><h2>Revisá el Análisis de Riesgo</h2>
+    <p class="lead"><b>${esc(state.titulo)||'(sin título)'}</b><br>Instalación: ${esc(inst)} · ${totalR} riesgos en ${state.fases.length} fase(s)</p>
+    ${cuerpo}
+    ${alertas>0?`<div class="hint">⚠️ Hay <b>${alertas}</b> riesgo(s) por encima de "menor". Revisá las barreras de control antes de firmar.</div>`:''}
+    <div class="ok" style="margin-top:16px"><span class="big">✅</span><div>
+      <b style="font-family:'Barlow Condensed';font-size:20px">Borrador listo</b>
+      <div style="font-size:14.5px;color:var(--ink2)">Se arma con tu plantilla oficial. Debe ser revisado y firmado por el técnico de HYST.</div></div></div>
+    <div class="filebtns"><button class="btn btn-main" onclick="generar()">⬇️ Generar AR (Excel)</button></div>
+    <p class="mini">Vista previa funcional. La descarga real conecta con el motor que rellena tu plantilla .xlsm.</p></div>`;
+}
+function renderNav(){
+  if(mode==="home"||mode==="intake") return "";
+  const back=`<button class="btn btn-ghost" onclick="prev()">← Atrás</button>`;
+  const next= step<3?`<button class="btn btn-main" onclick="next()">Siguiente →</button>`:`<button class="btn btn-ghost" onclick="volverInicio()">↻ Inicio</button>`;
+  return back+next;
+}
+function saveDatos(){ if(document.getElementById("f_titulo")){ state.titulo=document.getElementById("f_titulo").value;
+  state.instalacion=document.getElementById("f_inst").value; if(document.getElementById("f_otra"))state.otraInst=document.getElementById("f_otra").value;
+  state.tecnico=document.getElementById("f_tec").value; } }
+function bind(){
+  const inst=document.getElementById("f_inst");
+  if(inst) inst.addEventListener("change",e=>{state.instalacion=e.target.value;document.getElementById("otraWrap").style.display=e.target.value.startsWith("Otra")?"":"none";});
+  document.querySelectorAll("[data-f]").forEach(el=>el.addEventListener("input",e=>{const i=+e.target.dataset.f,k=e.target.dataset.k;state.fases[i][k]=e.target.value;}));
+  const pe=document.getElementById("pe"); if(pe) pe.addEventListener("input",e=>state.peText=e.target.value);
+}
+function next(){ if(step===0)saveDatos(); if(step<3){step++;render(true);} }
+function prev(){ if(step===0)saveDatos(); if(step>0){step--;render(true);} else {volverInicio();} }
+function volverIA(){ mode="intake"; render(); }
+function volverInicio(){ mode="home"; render(true); }
+function addFase(){ state.fases.push({titulo:"",detalle:"",personas:"",herramientas:[],riesgos:[],iaRiesgos:[]}); render(); }
+function delFase(i){ state.fases.splice(i,1); render(); }
+function addHerr(i){ const el=document.getElementById("herr_"+i); const v=el.value.trim(); if(v)state.fases[i].herramientas.push(v); render(); setTimeout(()=>{const n=document.getElementById("herr_"+i);if(n)n.focus();},30); }
+function delHerr(i,j){ state.fases[i].herramientas.splice(j,1); render(); }
+function toggleRiesgo(i,n){ const arr=state.fases[i].riesgos; const k=arr.indexOf(n); if(k>=0)arr.splice(k,1); else arr.push(n); render(); }
+async function generar(){
+  const data={titulo:state.titulo,instalacion:state.instalacion.startsWith('Otra')?state.otraInst:state.instalacion,version:state.version,
+    fases:state.fases.map(f=>({titulo:f.titulo,detalle:f.detalle,personas:f.personas,herramientas:f.herramientas,riesgos:f.riesgos}))};
+  const btns=document.querySelector(".filebtns");
+  if(btns) btns.innerHTML='<div class="thinking"><span class="spin"></span><p>Generando documento…</p><small>Rellenando tu plantilla y armando el PDF</small></div>';
+  try{
+    const resp=await fetch("/api/generar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+    const r=await resp.json();
+    if(r.error) throw new Error(r.error);
+    if(btns) btns.innerHTML=`
+      <a class="btn btn-main" href="${r.xlsx_url}" download>⬇️ Descargar Excel (.xlsm)</a>
+      ${r.pdf_url?`<a class="btn btn-dark" href="${r.pdf_url}" download>📄 Descargar PDF para firmar</a>`:''}`;
+  }catch(err){
+    if(btns) btns.innerHTML=`<div class="errbox">⚠️ ${(err&&err.message)||'No se pudo generar.'}</div>
+      <button class="btn btn-main" onclick="generar()">Reintentar</button>`;
+  }
+}
+render();
+</script>
+</body>
+</html>

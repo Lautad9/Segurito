@@ -1,0 +1,59 @@
+{
+  "titulo": "Montaje de cañería y tendido eléctrico en sala de bombas - DEMO IA",
+  "instalacion": "Puerto San Lorenzo",
+  "version": 1,
+  "fases": [
+    {
+      "titulo": "Replanteo y excavación manual de zanja",
+      "detalle": "Se realiza el replanteo del recorrido y la excavación manual de zanja menor a 1,20 m para alojar la cañería y el cable de potencia. Previo rastreo de interferencias.",
+      "personas": 6,
+      "herramientas": ["Palas aisladas", "Herramientas manuales varias", "Carretilla", "Detector de interferencias"],
+      "riesgos": [
+        "CHOQUE ELECTRICO",
+        "CAIDA DE PERSONAS A DISTINTO NIVEL",
+        "PISADAS SOBRE OBJETOS",
+        "GOLPES POR OBJETOS O HERRAMIENTAS",
+        "SOBREESFUERZOS",
+        "ACCIDENTES CAUSADOS POR SERES VIVOS"
+      ]
+    },
+    {
+      "titulo": "Tendido de cañería y conexionado eléctrico",
+      "detalle": "Tendido de cañería metálica y pasaje de cable de potencia. Conexionado en tablero seccional con tablero estanco, disyuntor y PAT.",
+      "personas": 6,
+      "herramientas": ["Herramientas manuales varias", "Taladro", "Tablero eléctrico", "Pértiga"],
+      "maquinaria": "Generador a explosión",
+      "riesgos": [
+        "CHOQUE ELECTRICO",
+        "CAIDA DE PERSONAS AL MISMO NIVEL",
+        "GOLPES POR OBJETOS O HERRAMIENTAS",
+        "EXPOSICION A TEMPERATURAS EXTREMAS"
+      ]
+    },
+    {
+      "titulo": "Soldadura de soportes metálicos",
+      "detalle": "Soldadura de soportes y ménsulas para fijación de cañería. Trabajo en caliente con permiso correspondiente y vigía de fuego.",
+      "personas": 4,
+      "herramientas": ["Motosoldadora", "Soldadora eléctrica", "Amoladora", "Extintor"],
+      "riesgos": [
+        "INCENDIO",
+        "EXPOSICION A RADIACIONES",
+        "PROYECCIONDE FRAGMENTOS O PARTICULAS",
+        "GOLPES POR OBJETOS O HERRAMIENTAS"
+      ]
+    },
+    {
+      "titulo": "Izaje y montaje de bomba",
+      "detalle": "Izaje de conjunto motobomba con grúa hidráulica articulada sobre camión y montaje sobre base. Maniobra guiada por señalero con sogas guía.",
+      "personas": 5,
+      "herramientas": ["Eslingas", "Grilletes", "Sogas guía"],
+      "izaje": "GRÚA HIDRÁULICA ARTICULADA SOBRE CAMIÓN",
+      "riesgos": [
+        "ATRAPAMIENTO POR VUELCO DE MAQUINAS",
+        "CAIDA DE OBJETOS",
+        "GOLPES POR OBJETOS O HERRAMIENTAS",
+        "CAIDA DE PERSONAS AL MISMO NIVEL"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+{
+  "CHOQUE ELECTRICO": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 3
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.3,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5’ sobre riesgos asociados.\nPrevio al comienzo de las tareas, se deberá verificar la presencia de las tarjetas de consignación \nTablero eléctrico, herramientas eléctricas habilitadas en plataforma GEINS con sus respectivos QRs.",
+    "barrera_fisica": "Tablero eléctrico estanco, con disyuntor, puesta a tierra, llave térmica y protección acrílica.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 9
+  },
+  "CAIDA DE PERSONAS A DISTINTO NIVEL": {
+    "fine_inherente": {
+      "exp": 2.5,
+      "prob": 1.2,
+      "cons": 3
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5’ sobre riesgos asociados.\nProhibido obstaculizar las zonas de tránsito.\nUso de veredas y sendas peatonales.\nEvitar el ingreso de terceros a la zona operativa.",
+    "barrera_fisica": "Acopio de tierra a 2m de distancia de los bordes de la excavación.\nVallado perimetral y señalización de acopio de tierra y/o escombros.\nSeñalización de la zona de trabajo y excavación.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 3
+  },
+  "CAIDA DE PERSONAS AL MISMO NIVEL": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.3,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5'.  Evaluar el entorno en donde se va a desplazar el operario, que no existan ni objetos, obstáculos ni sustancias resbaladizas. Mantener el Orden y la Limpieza. Prohibición de circular por cañerías de Red de Incendio y/o Producto.",
+    "barrera_fisica": "Orden y limpieza del sector. Vallado físicos de excavaciones y zonas de acopio.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - Señalización de Obra - EPP Básicos",
+    "ocurrencias": 10
+  },
+  "PISADAS SOBRE OBJETOS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.3,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5´ antes del inicio de trabajo. Mantener Orden y limpieza. La zona de tránsito, limpiarlas de objetos, retirando todo material alojado en el suelo",
+    "barrera_fisica": "Orden y limpieza del sector.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Señalización zon de trabajo -Uso de EPP basicos y especificos",
+    "ocurrencias": 9
+  },
+  "GOLPES POR OBJETOS O HERRAMIENTAS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5’. Evitar interposición / estorbos, tomando distancia entre compañeros.",
+    "barrera_fisica": "Uso de guantes de vaqueta.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Uso de EPP",
+    "ocurrencias": 10
+  },
+  "SOBREESFUERZOS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.3,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5'. Capacitación en LMC. Adecuar posturas cómodas que no requieran esfuerzos excesivos.",
+    "barrera_fisica": "Cuando sea necesario, implementar medios mecánicos.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - EPP Básicos",
+    "ocurrencias": 9
+  },
+  "EXPOSICION A TEMPERATURAS EXTREMAS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5' sobre riesgos asociados. Respetar ciclos de descansos establecidos.",
+    "barrera_fisica": "Hidratación constrante.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 4
+  },
+  "ACCIDENTES CAUSADOS POR SERES VIVOS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.3,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5' sobre riesgos asociados. Circular por sendas seguras.",
+    "barrera_fisica": "Verificar la presencia o ausencia de animales o alimañas mientras se circula y se trabaja. Dar aviso en caso de avistamiento.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 10
+  },
+  "INCENDIO": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 3
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5’.\nCertificado de medidor de gases.\nPersonal habilitado y capacitado para realizar mediciones de gases.\nMáquinas y equipos eléctricos y a explosión habilitados en plataforma PONCHO con su respectivo QR. Recarga de combustible con equipo apago y frío.",
+    "barrera_fisica": "Medición de gases constante.\nExtintor 10 KG PQS ABC. Contención de chispas con mantas ignífugas.\nUso de arrestallama de 40mm todos los vehículos y maquinaria a explosión intervinientes.",
+    "jerarquia": "CONTROLES DE INGENIERÍA - CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - EPP Básicos",
+    "ocurrencias": 7
+  },
+  "INHALACION, CONTACTO CUTANEO O INGESTION DE SUSTANCIAS NOCIVAS": {
+    "fine_inherente": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.3,
+      "prob": 0.3,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5' sobre riesgos asociados.",
+    "barrera_fisica": "Uso de guantes de vaqueta cuando se manipule hormigón",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Basicos",
+    "ocurrencias": 4
+  },
+  "ATRAPAMIENTO POR VUELCO DE MAQUINAS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 3
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 3
+    },
+    "barrera_admin": "Charla de 5’ sobre riesgos asociados.\nGrúas y grueros habilitados.\nPlan de izaje.",
+    "barrera_fisica": "Colocación de calzas o zapatas de seguridad en las patas estabilizadoras de la grúa.\nEstabilizadores totalmente extendidos.\nEl peso a elevar, incluidos los elementos auxiliares no superará el 70% de la capacidad bruta de tabla de la grúa y de todo el conjunto de izaje.\nVientos menores a 30 km/h.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 1
+  },
+  "CAIDA DE OBJETOS": {
+    "fine_inherente": {
+      "exp": 1.2,
+      "prob": 1.2,
+      "cons": 3
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 3
+    },
+    "barrera_admin": "Charla de 5’ sobre riesgos asociados.\nGrúas y grueros habilitados.\nPlan de izaje. No circular por debajo de la carga suspendida.",
+    "barrera_fisica": "Colocación de calzas o zapatas de seguridad en las patas estabilizadoras de la grúa.\nEstabilizadores totalmente extendidos.\nEl peso a elevar, incluidos los elementos auxiliares no superará el 70% de la capacidad bruta de tabla de la grúa y de todo el conjunto de izaje.\nVientos menores a 30 km/h.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "EPP Básicos",
+    "ocurrencias": 1
+  },
+  "EXPOSICION A RADIACIONES": {
+    "fine_inherente": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.3,
+      "prob": 0.3,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5' sobre riesgos asociados.\nSi el soldador requiere ayudante junto a él, el mismo deberá utilizar mismos EPI Específicos.\nSoldador habilitado por YPF.",
+    "barrera_fisica": "Utilización de Mascara con filtros UV para soldadura, campera, guantes de puño largo y polainas de descarne.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - EPP Básicos - EPI",
+    "ocurrencias": 2
+  },
+  "PROYECCION DE FRAGMENTOS O PARTICULAS": {
+    "fine_inherente": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.3,
+      "prob": 0.6,
+      "cons": 3
+    },
+    "barrera_admin": "Charla de 5’.\nAmoladoras habiltiadas en PONCHO con su respectivo QR.",
+    "barrera_fisica": "Para tareas de amolado, se deberá contar con Protección facial tipo burbuja de alto impacto, delantal de cuero de descarne, con capa intermedia de fibra de vidrio y forrería 100% de Kevlar y guantes anti cortes / anti impactos. Contar con mantas ignífugas para contención de chispas.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - EPP Básicos - EPI",
+    "ocurrencias": 3
+  },
+  "AGENTES FISICOS:RUIDO": {
+    "fine_inherente": {
+      "exp": 2.5,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "fine_residual": {
+      "exp": 0.6,
+      "prob": 0.6,
+      "cons": 1.7
+    },
+    "barrera_admin": "Charla de 5'.",
+    "barrera_fisica": "Uso de protección auditiva tipo copa o endoaural.",
+    "jerarquia": "CONTROLES ADMINISTRATIVOS - EPP",
+    "epp": "Charla de 5' - EPP Básico - EPI",
+    "ocurrencias": 4
+  }
+}
