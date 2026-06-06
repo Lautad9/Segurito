@@ -22,7 +22,7 @@ with open(os.path.join(BASE, "engine", "riesgos_validos.json"), encoding="utf-8"
     NOMBRES_VALIDOS = json.load(f)
 
 API_URL = "https://api.anthropic.com/v1/messages"
-MODELO = "claude-sonnet-4-20250514"
+MODELO = "claude-haiku-4-5-20251001"
 
 def construir_prompt(pe_text):
     lista = "\n".join(f"  - {n}" for n in NOMBRES_VALIDOS)
